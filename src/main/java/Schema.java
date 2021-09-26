@@ -3,10 +3,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Schema {
-    HashMap<String, Column> columns;
+    private HashMap<String, Column> columns;
+
     public Collection<Column> getColumns() {
         return columns.values();
     }
+    public Column getColumn(String key) {
+        return columns.getOrDefault(key, null);
+    }
+
     public Schema() {
         columns = new HashMap<>();
     }

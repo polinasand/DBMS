@@ -9,17 +9,19 @@ public class Database {
         this.name = name;
         this.tables = new HashMap<>();
     }
-    public Table get(String name){
+
+    public Table get(String name) {
         return this.tables.getOrDefault(name, null);
     }
 
-    public Collection<Table> getList(){
+    public Collection<Table> getList() {
         return tables.values();
     }
 
     public String getName() {
         return name;
     }
+
     public Boolean add(Table table) {
         if (tables.containsKey(table.getName())) {
             System.out.println("Duplicate value for table name");
@@ -35,6 +37,11 @@ public class Database {
             return false;
         }
         tables.remove(name);
+        return true;
+    }
+
+    public Boolean save() {
+        //Gson gson = new Gson();
         return true;
     }
 
