@@ -1,10 +1,13 @@
-import types.Type;
+package app;
+
+
+import app.types.Type;
 
 public class Column {
     private Type type;
     public String name;
 
-    Column(String name, Type type) {
+    public Column(String name, Type type) {
         this.name = name;
         this.type = type;
     }

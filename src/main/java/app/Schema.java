@@ -1,3 +1,5 @@
+package app;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ public class Schema {
     public Collection<Column> getColumns() {
         return columns.values();
     }
+
     public Column getColumn(String key) {
         return columns.getOrDefault(key, null);
     }

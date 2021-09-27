@@ -1,6 +1,6 @@
+package app;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Table {
     private ArrayList<Row> rows;
@@ -12,6 +12,7 @@ public class Table {
         this.schema = schema;
         this.rows = data;
     }
+
     public String getName() {
         return name;
     }
@@ -24,7 +25,7 @@ public class Table {
         return this.rows;
     }
 
-    public Row getRow(int index){
+    public Row getRow(int index) {
         if (index >= 0 && index < rows.size())
             return this.rows.get(index);
         return null;
