@@ -31,8 +31,16 @@ public class Table {
         return null;
     }
 
-    public void addRows(ArrayList<Row> rows) {
-        this.rows.addAll(rows);
+    public Boolean addRows(ArrayList<Row> rows) {
+        if (rows.size() == 0)
+            return true;
+        Schema rowsSchema = rows.get(0).getSchema();
+        if (rowsSchema.equals(schema)) {
+            this.rows.addAll(rows);
+            return true;
+        }
+        System.out.println("Wrong schema.");
+        return false;
     }
 
     public Boolean deleteRow(int index) {

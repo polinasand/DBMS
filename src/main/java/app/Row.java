@@ -15,4 +15,5 @@ public class Row {
     public Cell getCell(int index) {
         return cells.get(index);
     }
+    public Schema getSchema() { return this.schema; }
 }

@@ -2,6 +2,11 @@ package app.types;
 
 public enum Type {
     INTEGER,
-    REAL
+    REAL,
+    STRING,
+    CHAR,
+    TEXTFILE,
+    INTINTVL
+    CHARINVL
 
 }
