@@ -1,14 +1,20 @@
 package app;
 
 
-import app.types.Type;
-
-public class Column {
-    private Type type;
+public class Column<T> {
+    private Class<T> type;
     public String name;
 
-    public Column(String name, Type type) {
+    public Column(String name) {
         this.name = name;
-        this.type = type;
+
     }
+
+    public Class<T> getType() {
+        return type;
+    }
+    public String getName() {
+        return name;
+    }
+
 }

@@ -10,7 +10,20 @@ public class Table {
     public Table(String name, Schema schema, ArrayList<Row> data) {
         this.name = name;
         this.schema = schema;
-        this.rows = data;
+        this.rows = new ArrayList<>();
+        this.addRows(data);
+    }
+
+    private Boolean validateRow(Row row) {
+        ArrayList<Column> schemaTypes = new ArrayList<>(schema.getColumns());
+        /*if (row.size() == schemaTypes.size()) {
+            for (int i = 0; i < row.size(); i++) {
+                System.out.println(row.getCell(i).getType().toString()+' ' +schemaTypes.get(i).getType().toString());
+                if (!row.getCell(i).getType().equals(schemaTypes.get(i).getType()))
+                    return false;
+            }
+        }*/
+        return true;
     }
 
     public String getName() {
@@ -31,16 +44,15 @@ public class Table {
         return null;
     }
 
-    public Boolean addRows(ArrayList<Row> rows) {
-        if (rows.size() == 0)
-            return true;
-        Schema rowsSchema = rows.get(0).getSchema();
-        if (rowsSchema.equals(schema)) {
-            this.rows.addAll(rows);
-            return true;
+    public void addRows(ArrayList<Row> rows) {
+        for (Row row : rows) {
+            System.out.println("j");
+            if (validateRow(row)) {
+                System.out.println("j");
+                this.rows.add(row);
+            }
         }
-        System.out.println("Wrong schema.");
-        return false;
+
     }
 
     public Boolean deleteRow(int index) {

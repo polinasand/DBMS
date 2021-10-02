@@ -4,16 +4,20 @@ import java.util.ArrayList;
 
 
 public class Row {
-    private Schema schema;
+
     private ArrayList<Cell> cells;
 
-    public Row(Schema schema, ArrayList<Cell> cells) {
-        this.schema = schema;
+    public Row(ArrayList<Cell> cells) {
         this.cells = cells;
+
     }
 
     public Cell getCell(int index) {
         return cells.get(index);
     }
-    public Schema getSchema() { return this.schema; }
+
+
+    public int size() {
+        return cells.size();
+    }
 }

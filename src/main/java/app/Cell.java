@@ -5,6 +5,7 @@ public class Cell<T> {
 
     public Cell(T value) {
         this.value = value;
+
         System.out.println("created cell with value" + value);
     }
 
@@ -15,6 +16,8 @@ public class Cell<T> {
     public T getValue() {
         return this.value;
     }
+
+
 
     @Override
     public String toString() {
