@@ -2,11 +2,12 @@ package app;
 
 public class Cell<T> {
     private T value;
-
+    private T type;
     public Cell(T value) {
         this.value = value;
+        this.type = value;
 
-        System.out.println("created cell with value" + value);
+        System.out.println("created cell with value" + value+value.getClass());
     }
 
     public void setValue(T value) {
@@ -14,9 +15,13 @@ public class Cell<T> {
     }
 
     public T getValue() {
+
         return this.value;
     }
+    public T getType() {
 
+        return this.type;
+    }
 
 
     @Override

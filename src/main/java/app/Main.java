@@ -1,17 +1,22 @@
 package app;
 
-import javax.swing.*;
+import app.Columns.RealColumn;
+import app.Columns.StringColumn;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
-        /*Database db = new Database();
+        Database db = new Database();
 
         Schema schema = new Schema(
-                Arrays.asList(new Column<String>("col1"), new Column<Float>("col2")));
+                Arrays.asList(new StringColumn("col1"), new RealColumn("col2")));
 
         ArrayList<Row> data = new ArrayList<Row>(Arrays.asList(
                 new Row(new ArrayList<Cell>(
-                        Arrays.asList(new Cell<>("Polina"), new Cell<>("2.9"))))));
+                        Arrays.asList(new Cell<>("Polina"), new Cell<Double>(2.9))))));
 
         db.add(new Table("t1", schema, data));
         db.add(new Table("t2", schema, data));
@@ -21,13 +26,10 @@ public class Main {
         System.out.println(db.getName() + ' ' + t1.getName());
         System.out.println(row.getCell(1).toString());
 
-        DatabaseManager dbm = new DatabaseManager();
-        dbm.save(db);*/
+        //DatabaseManager dbm = new DatabaseManager();
+        //dbm.save(db);
 
-        Form1 frame = new Form1();
 
-        //JButton button1 = new JButton("Press");
-        //frame.getContentPane().add(button1);
 
 
     }

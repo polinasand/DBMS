@@ -39,4 +39,11 @@ public class CharInvl {
         return this.begin <= other.begin() && this.end >= other.end();
     }
 
+    static public CharInvl parseString(String value) {
+        if (value.length() !=5 || !(value.charAt(0) == '[' && value.charAt(value.length()-1) == ']'))
+            return null;
+        String[] nums = value.substring(1, value.length()-1).split(";");
+        return new CharInvl(nums[0].charAt(0), nums[1].charAt(0));
+    }
+
 }

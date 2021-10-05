@@ -39,4 +39,19 @@ public class IntInvl {
         return this.begin <= other.begin() && this.end >= other.end();
     }
 
+    static public IntInvl parseString(String value) {
+        if (value.length() < 3 || !(value.charAt(0) == '[' && value.charAt(value.length()-1) == ']'))
+            return null;
+        String[] nums = value.substring(1, value.length()-1).split(";");
+        int begin, end;
+        try {
+            begin = Integer.parseInt(nums[0]);
+            end = Integer.parseInt(nums[1]);
+
+        } catch (Exception e) {
+            return null;
+        }
+        return new IntInvl(begin, end);
+    }
+
 }
