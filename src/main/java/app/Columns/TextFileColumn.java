@@ -1,8 +1,8 @@
 package app.Columns;
 
 import app.Cell;
-import app.types.TextFile;
-import app.types.Type;
+import app.Types.TextFile;
+import app.Types.Type;
 
 public class TextFileColumn extends Column{
     public TextFileColumn(String name){

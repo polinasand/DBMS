@@ -1,8 +1,8 @@
 package app.Columns;
 
 import app.Cell;
-import app.types.IntInvl;
-import app.types.Type;
+import app.Types.IntInvl;
+import app.Types.Type;
 
 public class IntInvlColumn extends Column{
     public IntInvlColumn(String name){

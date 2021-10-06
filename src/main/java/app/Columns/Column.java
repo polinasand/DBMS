@@ -2,7 +2,7 @@ package app.Columns;
 
 
 import app.Cell;
-import app.types.Type;
+import app.Types.Type;
 
 public abstract class Column {
     public String name;

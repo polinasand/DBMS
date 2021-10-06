@@ -1,7 +1,7 @@
 package app.Columns;
 
 import app.Cell;
-import app.types.Type;
+import app.Types.Type;
 
 public class StringColumn extends Column{
     public StringColumn(String name){
