@@ -1,4 +1,4 @@
-package app.types;
+package app.Types;
 
 public enum Type {
     INTEGER,

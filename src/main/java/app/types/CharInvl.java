@@ -1,4 +1,4 @@
-package app.types;
+package app.Types;
 
 public class CharInvl {
     private final char DEFAULT_BEGIN = 'a';

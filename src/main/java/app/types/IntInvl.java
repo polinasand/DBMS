@@ -1,4 +1,4 @@
-package app.types;
+package app.Types;
 
 public class IntInvl {
     private final int DEFAULT_BEGIN = 0;
