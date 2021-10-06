@@ -16,7 +16,6 @@ public class Row {
         return cells.get(index);
     }
 
-
     public int size() {
         return cells.size();
     }
