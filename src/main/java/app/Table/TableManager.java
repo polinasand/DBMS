@@ -1,23 +1,24 @@
 package app.Table;
 
+import app.Cell.Cell;
 import app.Forms.TableModel;
+import app.Row;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class TableManager {
     public TableModel table;
-    private int numOfColumns;
-    private Connection connection;
-    ArrayList<Object[]> dataArrayList = new ArrayList<>();
-    Object[] columns;
-    Object[] emptyRow;
+    private int rowCount;
+    private int colCount;
+
+    String[] columns;
+    String[] emptyRow;
 
     public TableManager(Table t){
         table = new TableModel();
@@ -27,16 +28,19 @@ public class TableManager {
 
     public void initializeTable(Table t) {
         table.setData(getData(t));
+        rowCount = t.getRows().size();
+        colCount = t.getSchema().getKeys().size();
     }
 
-    private Object[][] getData(Table t) {
-        Object[][] data = new Object[t.getRows().size()][t.getSchema().getColumns().size()];
+    private String[][] getData(Table t) {
+        String[][] data = new String[t.getRows().size()][t.getSchema().getColumns().size()];
+
         for (int i = 0; i < t.getRows().size(); i++) {
-            Object[] row = new Object[t.getSchema().getColumns().size()];
-            int j = 0;
+            String[] row = new String[t.getSchema().getColumns().size()];
             int s = t.getRows().get(i).size();
-            for(j=0; j<s; ){
-                row[j++] = t.getRows().get(i).getCell(j);
+
+            for(int j=0; j<s; j++){
+                row[j] = String.valueOf(t.getRows().get(i).getCell(j));
             }
             data[i] = row;
         }
@@ -44,16 +48,18 @@ public class TableManager {
     }
 
     private void updateColumns(Table t) {
-        String[] colNames = new String[t.getSchema().getKeys().size()];
-        columns = new Object[t.getSchema().getKeys().size()];
-        emptyRow = new Object[t.getSchema().getKeys().size()];
+        //String[] colNames = new String[t.getSchema().getKeys().size()];
+        colCount = t.getSchema().getKeys().size();
+        columns = new String[colCount];
+        emptyRow = new String[colCount];
         int i = 0;
         for(String col : t.getSchema().getKeys()){
-            columns[i] = col;
-            colNames[i] = col + "(" + t.getColumn(col).getType().name() + ")";
-            emptyRow[i++] = t.getColumn(col).getDefault();
+            System.out.println(col);
+            columns[i] = col + "(" + t.getColumn(col).getType().name() + ")";
+            System.out.println(columns[i]);
+            emptyRow[i++] = String.valueOf(t.getColumn(col).getDefault());
         }
-        table.setColumnNames(colNames);
+        table.setColumnNames(columns);
     }
 
 
@@ -66,7 +72,7 @@ public class TableManager {
         TableCellRenderer headerRenderer =
                 table.getTableHeader().getDefaultRenderer();
 
-        for (int i = 0; i < numOfColumns; i++) {
+        for (int i = 0; i < colCount; i++) {
             column = table.getColumnModel().getColumn(i);
             comp = headerRenderer.getTableCellRendererComponent(
                     null, column.getHeaderValue(),
@@ -83,45 +89,49 @@ public class TableManager {
     }
 
 
-    public void setUpDaysColumn(TableColumn daysColumn) {
-        JComboBox<String> comboBox = new JComboBox<>();
-        comboBox.addItem("Понеділок");
-        comboBox.addItem("Вівторок");
-        comboBox.addItem("Середа");
-        comboBox.addItem("Четвер");
-        comboBox.addItem("П'ятниця");
-        comboBox.addItem("Субота");
-        comboBox.addItem("Неділя");
-        daysColumn.setCellEditor(new DefaultCellEditor(comboBox));
-
-        DefaultTableCellRenderer renderer =
-                new DefaultTableCellRenderer();
-        renderer.setToolTipText("Click for combo box");
-        daysColumn.setCellRenderer(renderer);
-    }
-
 
     public void insertRow(){
-        Object[][] newData = new Object[dataArrayList.size()+1][numOfColumns];
-        dataArrayList.add(emptyRow);
-        for (int i = 0; i < dataArrayList.size(); i++) {
-            newData[i] = dataArrayList.get(i);
+        rowCount += 1;
+        String[][] newData = new String[rowCount][colCount];
+        System.out.println(table.getRowCount() + " " + colCount);
+        for (int i = 0; i < rowCount-1; i++) {
+            for (int j=0; j < table.getColumnCount(); j++)
+                newData[i][j] = (String)table.getValueAt(i, j);
         }
+
         table.setData(newData);
     }
 
     public void deleteRow(int ind){
-
-        Object[][] newData = new Object[dataArrayList.size()-1][numOfColumns];
+        System.out.println(rowCount);
+        rowCount -= 1;
+        String[][] newData = new String[rowCount][colCount];
         for (int i = 0; i < ind; i++) {
-            newData[i] = dataArrayList.get(i);
+            for (int j=0; j<colCount; j++)
+                newData[i][j] = (String)table.getValueAt(i, j);
         }
-        for (int i = ind+1; i < dataArrayList.size(); i++) {
-            newData[i-1] = dataArrayList.get(i);
+        for (int i = ind+1; i < rowCount; i++) {
+            for (int j=0; j<colCount; j++)
+                newData[i][j] = (String)table.getValueAt(i, j);
         }
         table.setData(newData);
     }
 
+    public HashMap<Integer, Row> updateData() {
+        HashMap<Integer, Row> map = new HashMap<>();
+        System.out.println("Chnaged rows "+table.changedRows.size());
+
+        table.changedRows.forEach(ind -> {
+            ArrayList<Cell> cells = new ArrayList<Cell>();
+            for (int i=0; i<table.getColumnCount(); i++){
+                cells.add(new Cell(table.getValueAt(ind, i)));
+                System.out.println(table.getValueAt(ind, i));
+            }
+            map.put(ind, new Row(cells));
+
+        });
+        return map;
+    }
 
 }
 

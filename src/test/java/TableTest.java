@@ -1,4 +1,4 @@
-import app.Cell;
+import app.Cell.Cell;
 import app.Columns.IntInvlColumn;
 import app.Columns.RealColumn;
 import app.Columns.StringColumn;

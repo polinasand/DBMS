@@ -47,6 +47,7 @@ public class IntInvl {
         try {
             begin = Integer.parseInt(nums[0]);
             end = Integer.parseInt(nums[1]);
+            if (begin > end) return null;
 
         } catch (Exception e) {
             return null;

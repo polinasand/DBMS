@@ -6,7 +6,7 @@ public enum Type {
     STRING,
     CHAR,
     TEXTFILE,
-    INTINTVL,
+    INTINVL,
     CHARINVL
 
 }
