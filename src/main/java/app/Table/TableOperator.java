@@ -12,16 +12,16 @@ public class TableOperator {
         String schema2 = new Gson().toJson(table2.getSchema());
 
         if (!schema1.equals(schema2))
-            return new Table();
+            return null;
         ArrayList<Row> rows1 = new ArrayList<>(table1.getRows());
 
         for (int i=0; i<rows1.size(); i++) {
             if (table2.contains(rows1.get(i))) {
                 rows1.remove(i);
-
+                i--;
             }
         }
-        return new Table("diff_"+table1.getName()+"_"+table2.getName(), table1.getSchema(), rows1);
+        return new Table("diff("+table1.getName()+","+table2.getName()+")", table1.getSchema(), rows1);
     }
 
 }

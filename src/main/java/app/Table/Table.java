@@ -130,6 +130,7 @@ public class Table {
     }
 
     public Boolean contains(Row row) {
+    
         String gson = new Gson().toJson(row);
         String gsonRows = new Gson().toJson(this.rows);
         System.out.println(gson);

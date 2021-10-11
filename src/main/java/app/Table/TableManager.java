@@ -33,8 +33,17 @@ public class TableManager {
     }
 
     private String[][] getData(Table t) {
-        String[][] data = new String[t.getRows().size()][t.getSchema().getColumns().size()];
+        int r = t.getRows().size(), c = t.getSchema().getColumns().size();
+        String[][] data = new String[r][c];
 
+        if (r == 0) {
+            data = new String[1][c];
+            int j = 0;
+            for(String key : t.getSchema().getKeys()){
+                data[0][j++] = t.getColumn(key).getDefault().toString();
+            }
+            return data;
+        }
         for (int i = 0; i < t.getRows().size(); i++) {
             String[] row = new String[t.getSchema().getColumns().size()];
             int s = t.getRows().get(i).size();

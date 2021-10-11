@@ -16,7 +16,7 @@ public class TextFileColumn extends Column{
 
     @Override
     public Cell getDefault() {
-        return new Cell(new TextFile("default.txt", "abc"));
+        return new Cell(new TextFile("default.txt", ""));
     }
     @Override
     public Boolean validateValue(String value) {

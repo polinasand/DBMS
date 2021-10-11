@@ -118,14 +118,12 @@ public class TableTest {
                 new Row(new ArrayList<>(
                         Arrays.asList(new Cell<>("str3"), new Cell<>(2))))
         ));
-        this.expected = new ArrayList<>();
+        this.expected = null;
 
-        table1 = new Table("t1", schema, data1);
+        table1 = new Table("t1", anotherSchema, data1);
         table2 = new Table("t2", schema, data2);
 
-
-        String actual = new Gson().toJson(TableOperator.operation(table1, table2).getRows());
-        String expected = new Gson().toJson(this.expected);
+        Table actual = TableOperator.operation(table1, table2);
         assertEquals(expected, actual);
     }
 
