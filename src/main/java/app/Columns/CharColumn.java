@@ -1,15 +1,16 @@
 package app.Columns;
 
-import app.Cell;
+import app.Cell.Cell;
 import app.Types.Type;
 
 public class CharColumn extends Column{
     public CharColumn(String name){
+        this.type = Type.CHAR;
         this.name = name;
     }
     @Override
     public Type getType() {
-        return Type.CHAR;
+        return type;
     }
 
     @Override

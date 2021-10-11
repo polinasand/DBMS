@@ -1,6 +1,13 @@
 package app.Database;
 
+import app.Columns.Column;
+import app.Columns.ColumnDeserializer;
+import app.Columns.ColumnSerializer;
+import app.Table.Table;
+import app.Table.TableDeserializer;
+import app.Table.TableSerializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,7 +17,12 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class DatabaseManager {
-    public HashMap<String, Database> databases;
+    private HashMap<String, Database> databases;
+    public DatabaseManager() {
+        this.databases = new HashMap<>();
+    }
+
+
     public Database get(String name) {
         return this.databases.getOrDefault(name, null);
     }
@@ -44,25 +56,36 @@ public class DatabaseManager {
             if (scanner.hasNext()) {
                 String data = scanner.next();
                 System.out.println(data);
-                return new Gson().fromJson(data, Database.class);
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(Table.class, new TableDeserializer())
+                        .registerTypeAdapter(Column.class, new ColumnDeserializer())
+                        .create();
+                return gson.fromJson(data, Database.class);
 
             }
             scanner.close();
-        } catch (IllegalStateException exception) {
-            System.out.println(exception);
-            exception.printStackTrace();
         } catch (Exception e) {
             System.out.println(e);
-            e.printStackTrace();
+
+            return null;
         }
         return new Database();
     }
 
-    public Boolean save(Database db) {
-        String fileName = db.getName() + ".txt";
+    public Boolean save(String db) {
+
+
+        if (!this.databases.containsKey(db))
+            return false;
+
+        String fileName = db + ".txt";
         try {
             FileWriter writer = new FileWriter(fileName);
-            writer.write(new Gson().toJson(db));
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Table.class, new TableSerializer())
+                    .registerTypeAdapter(Column.class, new ColumnSerializer())
+                    .create();
+            writer.write(gson.toJson(this.databases.get(db)));
             writer.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -71,5 +94,7 @@ public class DatabaseManager {
         }
         return true;
     }
+
+
 
 }

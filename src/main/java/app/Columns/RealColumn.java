@@ -1,17 +1,18 @@
 package app.Columns;
 
-import app.Cell;
+import app.Cell.Cell;
 import app.Types.Type;
 
 public class RealColumn extends Column{
+
     public RealColumn(String name){
+        this.type = Type.REAL;
         this.name = name;
     }
     @Override
     public Type getType() {
-        return Type.REAL;
+        return type;
     }
-
     @Override
     public Cell getDefault() {
         return new Cell(0.0);

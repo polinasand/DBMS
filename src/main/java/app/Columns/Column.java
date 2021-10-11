@@ -1,13 +1,14 @@
 package app.Columns;
 
 
-import app.Cell;
+import app.Cell.Cell;
 import app.Types.Type;
 
 public abstract class Column {
     public String name;
-
-    public Column() { }
+    public Type type;
+    public Column() {
+    }
 
     public abstract Type getType();
     public abstract Boolean validateValue(String value);
@@ -25,7 +26,7 @@ public abstract class Column {
                 return new CharColumn(name);
             case TEXTFILE:
                 return new TextFileColumn(name);
-            case INTINTVL:
+            case INTINVL:
                 return new IntInvlColumn(name);
             case CHARINVL:
                 return new CharInvlColumn(name);

@@ -1,16 +1,17 @@
 package app.Columns;
 
-import app.Cell;
+import app.Cell.Cell;
 import app.Types.CharInvl;
 import app.Types.Type;
 
 public class CharInvlColumn extends Column{
     public CharInvlColumn(String name){
+        this.type = Type.CHARINVL;
         this.name = name;
     }
     @Override
     public Type getType() {
-        return Type.CHARINVL;
+        return type;
     }
 
     @Override

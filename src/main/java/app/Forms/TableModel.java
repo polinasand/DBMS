@@ -12,8 +12,8 @@ public class TableModel extends AbstractTableModel {
         this.columnNames = columns;
     }
 
-    private Object[][] data;
-    public  void setData(Object[][] data){
+    private String[][] data;
+    public  void setData(String[][] data){
         this.data = data;
         fireTableStructureChanged();
     }
@@ -30,30 +30,32 @@ public class TableModel extends AbstractTableModel {
         return columnNames[col];
     }
 
-    public Object getValueAt(int row, int col) {
-        //System.out.println("In get value at!! + row = " + String.valueOf(row)  + " col = " + String.valueOf(col) + "\n");
-        return data[row][col];
-    }
-
-    /*
-     * JTable uses this method to determine the default renderer/
-     * editor for each cell.  If we didn't implement this method,
-     * then the last column would contain text ("true"/"false"),
-     * rather than a check box.
-     */
     public Class getColumnClass(int c) {
         return getValueAt(0, c).getClass();
     }
 
-    public boolean isCellEditable(int row, int col) {
-        return true; //r != 0;
+    @Override
+    public Object getValueAt(int rowIndex, int columnIndex)
+    {
+        return this.data[rowIndex][columnIndex];
     }
 
+
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex)
+    {
+        return true;
+    }
+
+
+    @Override
     public void setValueAt(Object value, int row, int col) {
-        System.out.println("In set value at!! + row = " + String.valueOf(row)  + " col = " + String.valueOf(col) + "\n");
-        data[row][col] = value;
+        System.out.println("In set value at row = " + String.valueOf(row)  + " col = " + String.valueOf(col) + "\n");
+        this.data[row][col] = (String) value;
         fireTableCellUpdated(row, col);
         changedRows.add(row);
+
     }
 
 

@@ -12,7 +12,9 @@ public class Schema {
     private ArrayList<String> order;
 
     public Schema() {
+
         columns = new HashMap<>();
+        order = new ArrayList<>();
     }
 
     public Schema(List<Column> _columns) {
@@ -29,5 +31,23 @@ public class Schema {
 
     public Column getColumn(String key) {
         return columns.getOrDefault(key, null);
+    }
+
+    public Boolean add(Column column) {
+        if (columns.get(column.name) == null) {
+            columns.put(column.name, column);
+            order.add(column.name);
+            return true;
+        }
+        return false;
+    }
+
+    public  Boolean delete(String name) {
+        if (this.columns.containsKey(name)) {
+            this.columns.remove(name);
+            this.order.remove(name);
+            return true;
+        }
+        return false;
     }
 }

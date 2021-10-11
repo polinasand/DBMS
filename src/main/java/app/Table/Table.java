@@ -1,5 +1,6 @@
 package app.Table;
 
+import app.Cell.Cell;
 import app.Columns.Column;
 import app.Row;
 import app.Schema;
@@ -18,6 +19,13 @@ public class Table {
         this.schema = new Schema();
         this.rows = new ArrayList<>();
 
+    }
+
+    public Table(String name) {
+        this.name = name;
+        this.schema = new Schema();
+        this.rows = new ArrayList<>();
+        //this.addEmptyRow();
     }
 
     public Table(String name, Schema schema, ArrayList<Row> data) {
@@ -62,6 +70,13 @@ public class Table {
         return null;
     }
 
+    public Boolean setRow(int index, Row row) {
+        if (index >=0 && index < this.rows.size() && validateRow(row)){
+            this.rows.set(index, row);
+            return true;
+        }
+        return false;
+    }
     public void addRows(ArrayList<Row> rows) {
         for (Row row : rows) {
             if (validateRow(row)) {
@@ -71,13 +86,45 @@ public class Table {
 
     }
 
-
-
     public Schema getSchema() { return this.schema; }
     public Boolean deleteRow(int index) {
         if (index >= 0 && index < rows.size()) {
             this.rows.remove(index);
             return true;
+        }
+        return false;
+    }
+
+    public void addEmptyRow(){
+        ArrayList<Cell> cells = new ArrayList<>();
+        for (String colName : schema.getKeys()) {
+            Column col = this.getColumn(colName);
+            cells.add(col.getDefault());
+        }
+        rows.add(new Row(cells));
+        System.out.println(rows.size()+" added 1 row");
+    }
+
+    public Boolean addColumn(Column column) {
+        if (this.schema.add(column)) {
+            for (Row row : this.rows) {
+                row.addCell(new Cell<>(column.getDefault()));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean deleteColumn(String name) {
+        Column column = this.schema.getColumn(name);
+        if (column != null) {
+            int ind = new ArrayList<>(this.schema.getKeys()).indexOf(name);
+            for (Row row : this.rows) {
+                if (!row.deleteCell(ind))
+                    return false;
+            }
+            return this.schema.delete(name);
+
         }
         return false;
     }

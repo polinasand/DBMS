@@ -1,16 +1,17 @@
 package app.Columns;
 
-import app.Cell;
+import app.Cell.Cell;
 import app.Types.TextFile;
 import app.Types.Type;
 
 public class TextFileColumn extends Column{
     public TextFileColumn(String name){
+        this.type = Type.TEXTFILE;
         this.name = name;
     }
     @Override
     public Type getType() {
-        return Type.TEXTFILE;
+        return type;
     }
 
     @Override
