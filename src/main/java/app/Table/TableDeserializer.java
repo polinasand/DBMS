@@ -2,8 +2,8 @@ package app.Table;
 
 import app.Cell.Cell;
 import app.Columns.Column;
-import app.Row;
-import app.Schema;
+import app.Row.Row;
+import app.Schema.Schema;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

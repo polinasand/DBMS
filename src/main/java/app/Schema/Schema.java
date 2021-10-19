@@ -1,4 +1,4 @@
-package app;
+package app.Schema;
 
 import app.Columns.Column;
 

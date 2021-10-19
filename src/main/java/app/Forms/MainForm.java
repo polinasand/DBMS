@@ -3,7 +3,7 @@ package app.Forms;
 import app.Columns.Column;
 import app.Database.Database;
 import app.Database.DatabaseManager;
-import app.Row;
+import app.Row.Row;
 import app.Table.Table;
 import app.Table.TableManager;
 import app.Table.TableOperator;
@@ -48,6 +48,12 @@ public class MainForm {
     private JButton addColumnButton1;
     private JButton saveEditedTableButton;
     private JButton tablesOperation;
+    private JLabel existedTablesLabel;
+    private JScrollPane tablesScrollPane;
+    private JScrollPane attributesScrollPane;
+    private JLabel existedAttributesName;
+    private JList attributesList;
+
     private DatabaseManager dbManager;
     private Database activeDB;
     private Table activeTable;
@@ -131,6 +137,7 @@ public class MainForm {
                 Collection<Database> existedDatabases = dbManager.getList();
                 if(existedDatabases.size() == 0 ){
                     JOptionPane.showMessageDialog(frame, "List of databases is empty. Please create or load database.");
+                    return;
                 }
                 String[] choices = new String[existedDatabases.size() + 1];
                 int ind = 0;
@@ -191,7 +198,7 @@ public class MainForm {
                 if(result) {
                     JOptionPane.showMessageDialog(frame, "Column `" + name + "`was added.");
                     updateListColumns();
-
+                    setTableModel();
 
                 } else {
                     JOptionPane.showMessageDialog(frame, "Wrong name for column (already exists).");

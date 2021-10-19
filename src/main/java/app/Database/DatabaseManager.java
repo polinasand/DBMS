@@ -1,13 +1,7 @@
 package app.Database;
 
-import app.Columns.Column;
-import app.Columns.ColumnDeserializer;
-import app.Columns.ColumnSerializer;
-import app.Table.Table;
-import app.Table.TableDeserializer;
-import app.Table.TableSerializer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import app.util.Deserializer;
+import app.util.Serializer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,11 +11,20 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class DatabaseManager {
+    private static DatabaseManager instance;
     private HashMap<String, Database> databases;
+
     public DatabaseManager() {
+        this.instance = this;
         this.databases = new HashMap<>();
     }
 
+    public static DatabaseManager getInstance() {
+        System.out.println(instance);
+        if (instance == null)
+            return new DatabaseManager();
+        return instance;
+    }
 
     public Database get(String name) {
         return this.databases.getOrDefault(name, null);
@@ -56,11 +59,8 @@ public class DatabaseManager {
             if (scanner.hasNext()) {
                 String data = scanner.next();
                 System.out.println(data);
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(Table.class, new TableDeserializer())
-                        .registerTypeAdapter(Column.class, new ColumnDeserializer())
-                        .create();
-                return gson.fromJson(data, Database.class);
+
+                return Deserializer.getJson().fromJson(data, Database.class);
 
             }
             scanner.close();
@@ -81,11 +81,8 @@ public class DatabaseManager {
         String fileName = db + ".txt";
         try {
             FileWriter writer = new FileWriter(fileName);
-            Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(Table.class, new TableSerializer())
-                    .registerTypeAdapter(Column.class, new ColumnSerializer())
-                    .create();
-            writer.write(gson.toJson(this.databases.get(db)));
+
+            writer.write(Serializer.toJson(this.databases.get(db)));
             writer.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");

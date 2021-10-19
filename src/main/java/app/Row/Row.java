@@ -1,4 +1,4 @@
-package app;
+package app.Row;
 
 import app.Cell.Cell;
 

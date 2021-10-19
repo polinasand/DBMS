@@ -1,7 +1,7 @@
 package app.Table;
 
 
-import app.Row;
+import app.Row.Row;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

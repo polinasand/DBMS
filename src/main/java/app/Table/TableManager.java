@@ -2,7 +2,7 @@ package app.Table;
 
 import app.Cell.Cell;
 import app.Forms.TableModel;
-import app.Row;
+import app.Row.Row;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
