@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class TableOperator {
     public static Table operation(Table table1, Table table2) {
-        String schema1 = new Gson().toJson(table1.getSchema());
-        String schema2 = new Gson().toJson(table2.getSchema());
+        String schema1 = new Gson().toJson(table1.getSchema().getKeys());
+        String schema2 = new Gson().toJson(table2.getSchema().getKeys());
 
         if (!schema1.equals(schema2))
             return null;
@@ -21,7 +21,7 @@ public class TableOperator {
                 i--;
             }
         }
-        return new Table("diff("+table1.getName()+","+table2.getName()+")", table1.getSchema(), rows1);
+        return new Table(table1.getName()+"_"+table2.getName(), table1.getSchema(), rows1);
     }
 
 }

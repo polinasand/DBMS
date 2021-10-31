@@ -9,7 +9,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
@@ -31,11 +30,15 @@ public class RowsController {
 
     public static Route addRow = (Request request, Response response) -> {
         Row row = Deserializer.getJson().fromJson(request.body(), Row.class);
-        ArrayList<Row> rows = new ArrayList<>();
-        rows.add(row);
+
         Table table = dbManager.get(request.params(Path.DATABASE_ID)).get(request.params(Path.TABLE_ID));
-        table.addRows(rows);
-        response.status(HTTP_OK);
+        Boolean res = table.addRow(row);
+        if (res)
+            response.status(HTTP_OK);
+        else {
+            response.status(HTTP_BAD_REQUEST);
+            System.out.println("Bad rows");
+        }
 
         return Serializer.toJson(response.status());
     };

@@ -25,6 +25,7 @@ public class Schema {
     }
     public Collection<Column> getColumns() {
         return columns.values();
+
     }
 
     public Collection<String> getKeys() { return order; }

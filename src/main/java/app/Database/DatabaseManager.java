@@ -1,5 +1,8 @@
 package app.Database;
 
+import app.Storage.MongoDBClient;
+import app.Storage.MySQLClient;
+import app.Storage.Storage;
 import app.util.Deserializer;
 import app.util.Serializer;
 
@@ -13,17 +16,33 @@ import java.util.Scanner;
 public class DatabaseManager {
     private static DatabaseManager instance;
     private HashMap<String, Database> databases;
+    private static Storage storage;
+
 
     public DatabaseManager() {
         this.instance = this;
         this.databases = new HashMap<>();
+        this.storage = new MySQLClient();
     }
 
     public static DatabaseManager getInstance() {
-        System.out.println(instance);
+
         if (instance == null)
             return new DatabaseManager();
         return instance;
+    }
+
+    public Boolean setStorage(String name){
+        System.out.println(name);
+        if (name == "mysql"){
+            this.storage = new MySQLClient();
+
+        }
+        else if (name == "mongodb"){
+            this.storage = new MongoDBClient();
+
+        }
+        return true;
     }
 
     public Database get(String name) {
@@ -58,31 +77,27 @@ public class DatabaseManager {
             Scanner scanner = new Scanner(new File(fileName));
             if (scanner.hasNext()) {
                 String data = scanner.next();
-                System.out.println(data);
-
-                return Deserializer.getJson().fromJson(data, Database.class);
+                 return Deserializer.getJson().fromJson(data, Database.class);
 
             }
             scanner.close();
         } catch (Exception e) {
-            System.out.println(e);
-
+            e.printStackTrace();
             return null;
         }
         return new Database();
     }
 
-    public Boolean save(String db) {
+    public Boolean save(String name) {
 
-
-        if (!this.databases.containsKey(db))
+        if (!this.databases.containsKey(name))
             return false;
 
-        String fileName = db + ".txt";
+        String fileName = name + ".txt";
         try {
             FileWriter writer = new FileWriter(fileName);
 
-            writer.write(Serializer.toJson(this.databases.get(db)));
+            writer.write(Serializer.toJson(this.databases.get(name)));
             writer.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -92,6 +107,19 @@ public class DatabaseManager {
         return true;
     }
 
+    public Database loadFromDB(String name) {
 
+        return this.storage.loadDatabase(name);
+
+    }
+
+    public Boolean saveToDB(String name) {
+        if (!this.databases.containsKey(name)) {
+            return false;
+        }
+
+        this.storage.saveDatabase(this.databases.get(name));
+        return true;
+    }
 
 }

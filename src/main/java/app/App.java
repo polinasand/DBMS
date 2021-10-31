@@ -6,7 +6,9 @@ import app.Database.DatabasesController;
 import app.Forms.MainForm;
 import app.Row.RowsController;
 import app.Schema.SchemaController;
+import app.Storage.StorageController;
 import app.Table.TableController;
+import app.Table.TableOperatorController;
 import app.util.Path;
 
 import static spark.Spark.*;
@@ -18,7 +20,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        //staticFileLocation("/static");
+        //form();
         port(8080);
         before((request, response) -> {
             response.type("application/json");
@@ -26,37 +28,45 @@ public class App {
         });
 
         DatabaseManager dbm = new DatabaseManager();
+        dbm.add(dbm.load("db1"));
+        Database db2 = dbm.load("db2");
+        dbm.add(db2);
 
-        Database db = dbm.load("db1");
-        dbm.add(db);
+        get(Path.LOAD_DATABASE, StorageController.loadDatabase);
+        post(Path.SAVE_DATABASE, StorageController.saveDatabase);
 
-        get(Path.DATABASES, DatabasesController.listDatabases);
-        post(Path.DATABASES, DatabasesController.addDatabase);
-        get(Path.DATABASE, DatabasesController.getDatabase);
-        delete(Path.DATABASE, DatabasesController.deleteDatabase);
+        post(Path.STORAGE, StorageController.storage);
+        path(Path.STORAGE, () -> {
 
-        get(Path.LOAD_DATABASE, DatabasesController.loadDatabase);
-        post(Path.SAVE_DATABASE, DatabasesController.saveDatabase);
 
-        path(Path.DATABASE, () -> {
-            get(Path.TABLES, TableController.listTables);
-            post(Path.TABLES, TableController.addTable);
-            get(Path.TABLE, TableController.getTable);
-            delete(Path.TABLE, TableController.deleteTable);
+            get(Path.DATABASES, DatabasesController.listDatabases);
+            post(Path.DATABASES, DatabasesController.addDatabase);
+            get(Path.DATABASE, DatabasesController.getDatabase);
+            delete(Path.DATABASE, DatabasesController.deleteDatabase);
 
-            path(Path.TABLE, () -> {
-                get(Path.SCHEMA, SchemaController.listColumns);
-                post(Path.SCHEMA, SchemaController.addColumn);
-                delete(Path.COLUMN, SchemaController.deleteColumn);
-                get(Path.COLUMN, SchemaController.getСolumn);
+            path(Path.DATABASE, () -> {
+                get(Path.TABLES, TableController.listTables);
+                post(Path.TABLES, TableController.addTable);
+                get(Path.TABLE, TableController.getTable);
+                delete(Path.TABLE, TableController.deleteTable);
 
-                get(Path.ROWS, RowsController.listRows);
-                post(Path.ROWS, RowsController.addRow);
-                delete(Path.ROW, RowsController.deleteRow);
-                get(Path.ROW, RowsController.getRow);
+                path(Path.TABLE, () -> {
+                    get(Path.SCHEMA, SchemaController.listColumns);
+                    post(Path.SCHEMA, SchemaController.addColumn);
+                    delete(Path.COLUMN, SchemaController.deleteColumn);
+                    get(Path.COLUMN, SchemaController.getСolumn);
+
+                    get(Path.ROWS, RowsController.listRows);
+                    post(Path.ROWS, RowsController.addRow);
+                    delete(Path.ROW, RowsController.deleteRow);
+                    get(Path.ROW, RowsController.getRow);
+
+                    get(Path.DIFF, TableOperatorController.operation);
+
+
+                });
             });
         });
-
     }
 
 

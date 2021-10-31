@@ -3,6 +3,7 @@ package app.Table;
 import app.Database.Database;
 import app.Database.DatabaseManager;
 import app.util.Deserializer;
+import app.util.Link;
 import app.util.Path;
 import app.util.Serializer;
 import spark.Request;
@@ -20,13 +21,38 @@ public class TableController {
     public static Route listTables = (Request request, Response response) -> {
         Database db = dbManager.get(request.params(Path.DATABASE_ID));
         Collection<Table> tables = db.getList();
-        return Serializer.toJson(tables);
+        String data = Serializer.toJson(tables);
+        String current = request.url();
+        String target = current+Path.TABLE_ID;
+
+        Link[] links = new Link[4];
+        links[0] = new Link("GET", "self", current);
+        links[1] = new Link("GET", "get_table", target);
+        links[2] = new Link("POST", "add_table", current);
+        links[3] = new Link("DELETE", "delete_table", target);
+
+        return Link.addProperty(data, links);
+
     };
 
     public static Route getTable = (Request request, Response response) -> {
         Database db = dbManager.get(request.params(Path.DATABASE_ID));
         Table table = db.get(request.params(Path.TABLE_ID));
-        return Serializer.toJson(table);
+        String data = Serializer.toJson(table);
+        String current = request.url();
+        String rows = current+Path.ROWS;
+        String column = current + Path.COLUMN;
+        String schema = current + Path.SCHEMA;
+        String diff = current + Path.DIFF;
+
+        Link[] links = new Link[5];
+        links[0] = new Link("GET", "self", current);
+        links[1] = new Link("GET", "list_rows", rows);
+        links[2] = new Link("GET", "get_column", column);
+        links[3] = new Link("GET", "get_schema", schema);
+        links[4] = new Link("GET", "get_diff", diff);
+
+        return Link.addProperty(data, links);
     };
 
     public static Route addTable = (Request request, Response response) -> {

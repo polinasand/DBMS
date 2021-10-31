@@ -85,6 +85,14 @@ public class Table {
         }
 
     }
+    public Boolean addRow(Row row) {
+
+            if (validateRow(row)) {
+                this.rows.add(row);
+                return true;
+            }
+            return false;
+    }
 
     public Schema getSchema() { return this.schema; }
     public Boolean deleteRow(int index) {
