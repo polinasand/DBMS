@@ -3,10 +3,7 @@ package app.Schema;
 import app.Columns.Column;
 import app.Database.DatabaseManager;
 import app.Table.Table;
-import app.util.Deserializer;
-import app.util.Link;
-import app.util.Path;
-import app.util.Serializer;
+import app.util.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -18,7 +15,7 @@ public class SchemaController {
     private static DatabaseManager dbManager = DatabaseManager.getInstance();
 
     public static Route listColumns = (Request request, Response response) -> {
-        Schema schema = dbManager.get(request.params(Path.DATABASE_ID)).get(request.params(Path.TABLE_ID)).getSchema();
+        Schema schema = MainController.getTable(request).getSchema();
         String data = Serializer.toJson(schema);
         String current = request.url();
         String target = current+Path.COLUMN;
@@ -33,7 +30,7 @@ public class SchemaController {
     };
 
     public static Route getСolumn = (Request request, Response response) -> {
-        Column column = dbManager.get(request.params(Path.DATABASE_ID)).get(request.params(Path.TABLE_ID)).getColumn(request.params(Path.COLUMN_ID));
+        Column column = MainController.getTable(request).getColumn(request.params(Path.COLUMN_ID));
 
         String data = Serializer.toJson(column);
         String current = request.url();
@@ -46,7 +43,7 @@ public class SchemaController {
 
     public static Route addColumn = (Request request, Response response) -> {
         Column column = Deserializer.getJson().fromJson(request.body(), Column.class);
-        Table table = dbManager.get(request.params(Path.DATABASE_ID)).get(request.params(Path.TABLE_ID));
+        Table table = MainController.getTable(request);
         Boolean result = table.addColumn(column);
         if (result)
             response.status(HTTP_OK);
@@ -56,7 +53,7 @@ public class SchemaController {
     };
 
     public static Route deleteColumn = (Request request, Response response) -> {
-        Table table = dbManager.get(request.params(Path.DATABASE_ID)).get(request.params(Path.TABLE_ID));
+        Table table = MainController.getTable(request);
         String name = request.params(Path.COLUMN_ID);
         Boolean result = table.deleteColumn(name);
         if (result)

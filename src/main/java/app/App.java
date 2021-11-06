@@ -32,11 +32,13 @@ public class App {
         Database db2 = dbm.load("db2");
         dbm.add(db2);
 
+
+        get(Path.STORAGE, StorageController.listDatabases);
         get(Path.LOAD_DATABASE, StorageController.loadDatabase);
         post(Path.SAVE_DATABASE, StorageController.saveDatabase);
 
-        post(Path.STORAGE, StorageController.storage);
-        path(Path.STORAGE, () -> {
+
+
 
 
             get(Path.DATABASES, DatabasesController.listDatabases);
@@ -66,7 +68,6 @@ public class App {
 
                 });
             });
-        });
     }
 
 

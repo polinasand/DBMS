@@ -1,6 +1,5 @@
 package app.Database;
 
-import app.Storage.MongoDBClient;
 import app.Storage.MySQLClient;
 import app.Storage.Storage;
 import app.util.Deserializer;
@@ -32,19 +31,6 @@ public class DatabaseManager {
         return instance;
     }
 
-    public Boolean setStorage(String name){
-        System.out.println(name);
-        if (name == "mysql"){
-            this.storage = new MySQLClient();
-
-        }
-        else if (name == "mongodb"){
-            this.storage = new MongoDBClient();
-
-        }
-        return true;
-    }
-
     public Database get(String name) {
         return this.databases.getOrDefault(name, null);
     }
@@ -72,6 +58,7 @@ public class DatabaseManager {
     }
 
     public Database load(String name) {
+
         String fileName = name + ".txt";
         try {
             Scanner scanner = new Scanner(new File(fileName));
@@ -107,7 +94,7 @@ public class DatabaseManager {
         return true;
     }
 
-    public Database loadFromDB(String name) {
+    public Database loadFromDB(String name, String storage) {
 
         return this.storage.loadDatabase(name);
 

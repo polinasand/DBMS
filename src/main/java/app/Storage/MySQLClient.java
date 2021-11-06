@@ -2,6 +2,7 @@ package app.Storage;
 
 import app.Database.Database;
 import app.Row.Row;
+import app.Schema.Schema;
 import app.Table.Table;
 import app.util.Deserializer;
 import app.util.Serializer;
@@ -13,7 +14,7 @@ import java.util.Collection;
 public class MySQLClient extends Storage{
     private String url = "jdbc:mysql://localhost:3306?serverTimezone=Europe/Moscow&useSSL=false";
     private String user = "root";
-    private String password = "hellokitty";
+    private String password = "";
     private Statement statement;
     private Connection connection = null;
 
@@ -23,8 +24,6 @@ public class MySQLClient extends Storage{
         try {
 
             if (connection == null) {
-                //Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-
                 connection = DriverManager.getConnection(url, user, password);
 
             }
@@ -65,8 +64,10 @@ public class MySQLClient extends Storage{
         String name = database.getName();
         try {
             this.open();
-            String sql = String.format("DROP DATABASE IF EXISTS %s", name);
+            String sql;
             try {
+                sql = String.format("DROP DATABASE IF EXISTS %s;", name);
+                statement.executeUpdate(sql);
                 sql = String.format("CREATE DATABASE %s;", name);
                 statement.executeUpdate(sql);
             } catch (SQLException e) {
@@ -77,6 +78,9 @@ public class MySQLClient extends Storage{
             for (Table table : database.getList()) {
                 sql = String.format("CREATE TABLE %1s.%2s (data JSON);",  name, table.getName());
                 System.out.println(sql);
+                statement.executeUpdate(sql);
+
+                sql = String.format("INSERT INTO %1s.%2s VALUES('%3s');",  name, table.getName(), Serializer.toJson(table.getSchema()));
                 statement.executeUpdate(sql);
                 for (Row row : table.getRows()) {
                     sql = String.format("INSERT INTO %1s.%2s VALUES('%3s');",  name,table.getName(), Serializer.toJson(row));
@@ -116,7 +120,13 @@ public class MySQLClient extends Storage{
                 sql = String.format("SELECT data FROM %1s.%2s", name, table);
                 ResultSet rows = statement.executeQuery(sql);
 
-                Table t = new Table(table);
+                Schema schema = new Schema();
+
+                // get schema
+                if (rows.next()) {
+                    schema = Deserializer.getJson().fromJson(rows.getString("data"), Schema.class);
+                }
+                Table t = new Table(name, schema, new ArrayList<>());
                 while (rows.next()) {
                     System.out.println(rows.getString("data"));
                     t.addRow(Deserializer.getJson().fromJson(rows.getString("data"), Row.class));

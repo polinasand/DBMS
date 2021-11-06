@@ -13,7 +13,7 @@ public class Link {
         public static String addProperty(String data, Link[] links) {
             String jsonLinks = Serializer.toJson(links);
             data = data.substring(0, data.length()-1);
-            return data + ", \"links\":"+ jsonLinks +"}";
+            return "{ \"data\": " + data + ", \"links\":"+ jsonLinks +"}";
         }
 
 }

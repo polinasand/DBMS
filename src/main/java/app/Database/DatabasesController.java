@@ -15,11 +15,11 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class DatabasesController {
     private static DatabaseManager dbManager = DatabaseManager.getInstance();
-
+    // REDO
     public static Route listDatabases = (Request request, Response response) -> {
         String storage = request.params(Path.STORAGE_ID);
-
         Collection<Database> databases = dbManager.getList();
+
         String data = Serializer.toJson(databases);
         String current = request.url();
         String target = current+Path.DATABASE_ID;
