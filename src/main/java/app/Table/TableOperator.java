@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class TableOperator {
     public static Table operation(Table table1, Table table2) {
-        String schema1 = new Gson().toJson(table1.getSchema().getKeys());
-        String schema2 = new Gson().toJson(table2.getSchema().getKeys());
+        String schema1 = new Gson().toJson(table1.getSchema());
+        String schema2 = new Gson().toJson(table2.getSchema());
 
         if (!schema1.equals(schema2))
             return null;
