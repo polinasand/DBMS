@@ -1,7 +1,5 @@
 package app.Database;
 
-import app.Storage.MySQLClient;
-import app.Storage.Storage;
 import app.util.Deserializer;
 import app.util.Serializer;
 
@@ -15,13 +13,10 @@ import java.util.Scanner;
 public class DatabaseManager {
     private static DatabaseManager instance;
     private HashMap<String, Database> databases;
-    private static Storage storage;
-
 
     public DatabaseManager() {
         this.instance = this;
         this.databases = new HashMap<>();
-        this.storage = new MySQLClient();
     }
 
     public static DatabaseManager getInstance() {
@@ -91,21 +86,6 @@ public class DatabaseManager {
             e.printStackTrace();
             return false;
         }
-        return true;
-    }
-
-    public Database loadFromDB(String name, String storage) {
-
-        return this.storage.loadDatabase(name);
-
-    }
-
-    public Boolean saveToDB(String name) {
-        if (!this.databases.containsKey(name)) {
-            return false;
-        }
-
-        this.storage.saveDatabase(this.databases.get(name));
         return true;
     }
 

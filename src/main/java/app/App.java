@@ -1,6 +1,5 @@
 package app;
 
-import app.Database.Database;
 import app.Database.DatabaseManager;
 import app.Database.DatabasesController;
 import app.Forms.MainForm;
@@ -20,25 +19,20 @@ public class App {
     }
 
     public static void main(String[] args) {
-        //form();
         port(4567);
         before((request, response) -> {
             response.type("application/json");
             response.header("Access-Control-Allow-Origin", "*");
+
         });
 
         DatabaseManager dbm = new DatabaseManager();
-        dbm.add(dbm.load("db1"));
-        Database db2 = dbm.load("db2");
-        dbm.add(db2);
+
 
 
         get(Path.STORAGE, StorageController.listDatabases);
         get(Path.LOAD_DATABASE, StorageController.loadDatabase);
         post(Path.SAVE_DATABASE, StorageController.saveDatabase);
-
-
-
 
 
             get(Path.DATABASES, DatabasesController.listDatabases);
