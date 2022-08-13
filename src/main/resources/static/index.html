@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Auto-Completion using AJAX</title>
+		<script src="loader.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Manipulating Tables using AJAX</h1>
+		<div>
+			<p>Input database name</p>
+			<input id="db-name"/>
+		</div>
+		<textarea id="db-container" rows="30" cols="150"></textarea>
+		<div>
+			<button id="get-content-button" onclick="init()">Get Data From Server</button>
+		</div>
+		<div>
+		<select id="first-table-select"></select>
+		<select id="second-table-select"></select>
+		<button id="operation-button" onclick="tableOperation()">Difference</button>
+		</div>
+    </body>
+</html>
